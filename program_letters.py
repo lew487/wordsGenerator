@@ -4,6 +4,7 @@ from keras.models import Sequential
 from keras.layers.core import Dense, Activation, Dropout
 from keras.layers.recurrent import LSTM
 from keras.datasets.data_utils import get_file
+from keras.models import model_from_json
 import numpy as np
 import random
 import sys
@@ -44,7 +45,8 @@ for i, sentence in enumerate(sentences):
 print('Build model...')
 if 	os.path.isfile('my_model_architecture_letters.json'):
 	model = model_from_json(open('my_model_architecture_letters.json').read())
-	model.load_weights('my_model_weights_letters.h5')
+	if 	os.path.isfile('my_model_weights_letters.h5'):
+		model.load_weights('my_model_weights_letters.h5')
 else:
 	model = Sequential()
 	model.add(LSTM(512, return_sequences=True, input_shape=(maxlen, len(chars))))
@@ -64,7 +66,7 @@ def sample(a, temperature=1.0):
     return np.argmax(np.random.multinomial(1, a, 1))
 
 # train the model, output generated text after each iteration
-for iteration in range(1, 60):
+for iteration in range(1, 180):
     print()
     print('-' * 50)
     print('Iteration', iteration)

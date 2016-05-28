@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from __future__ import print_function
 import os
 from keras.models import Sequential
@@ -5,6 +8,7 @@ from keras.layers.core import Dense, Activation, Dropout
 from keras.layers.recurrent import LSTM
 from keras.datasets.data_utils import get_file
 from sylabledivider import SyllableDivider
+from keras.models import model_from_json
 import numpy as np
 import random
 import sys
@@ -83,7 +87,8 @@ for i, sentence in enumerate(sequences):
 print('Build model...')
 if 	os.path.isfile('my_model_architecture_sylabes.json'):
 	model = model_from_json(open('my_model_architecture_sylabes.json').read())
-	model.load_weights('my_model_weights_sylabes.h5')
+	if os.path.isfile('my_model_weights_sylabes.h5'):
+		model.load_weights('my_model_weights_sylabes.h5')
 else:
 	model = Sequential()
 	model.add(LSTM(512, return_sequences=True, input_shape=(sequence_maxlen, len(char_set))))
@@ -106,7 +111,7 @@ def get_random_start_index(input_text, sequence_maxlen):
     return random.randint(0, len(input_text) - sequence_maxlen - 1)
 
 # train the model, output generated text after each iteration
-for iteration in range(1, 60):
+for iteration in range(1, 180):
     print()
     print('-' * 50)
     print('Iteration', iteration)

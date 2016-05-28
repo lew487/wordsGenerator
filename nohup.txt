@@ -1,0 +1,6 @@
+nohup ./run_letters.sh > log_27.05.16_letters 2>&1 < /dev/null &
+
+nohup ./run_sylabes.sh > log_27.05.16_sylabes 2>&1 < /dev/null &
+
+
+THEANO_FLAGS=device=gpu,floatX=float32 python program_sylabes.py mickiewiczkrotki.txt
